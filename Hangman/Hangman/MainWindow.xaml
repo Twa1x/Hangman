@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hangman"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Name="mainWindow">
+    <Window.Background>
+        <ImageBrush ImageSource="/Resources/background.jpg" Stretch="Fill" />
+    </Window.Background>
     <Grid>
-        
+        <Button Content="Play" HorizontalAlignment="Left" Margin="273,286,0,0" VerticalAlignment="Top" Width="157" Height="62" Background="#FFC1B5B5" FontSize="20" FontStyle="Italic" FontWeight="Bold" Click="Button_Click_Play"/>
     </Grid>
 </Window>
