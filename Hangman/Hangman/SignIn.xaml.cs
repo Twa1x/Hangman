@@ -26,9 +26,19 @@ namespace Hangman
       
         public SignIn()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            DeleteUser.IsEnabled = false;
+            PlayGame.IsEnabled = false;
+            Avatar.IsEnabled = false;
+        }
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+                     
+
+            DeleteUser.IsEnabled = true;
+            PlayGame.IsEnabled = true;
+            Avatar.IsEnabled = true;
         }
 
-     
     }
 }

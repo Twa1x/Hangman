@@ -99,7 +99,7 @@ namespace Hangman.ViewModels
         {
             string name = CurrentUser.UserName;
             string[] Lines = File.ReadAllLines(@"C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\bin\Debug\Users.txt");
-            File.Delete(@"C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\bin\Debug\Users.txt");// Deleting the file
+            File.Delete(@"C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\bin\Debug\Users.txt");
             using (StreamWriter sw = File.AppendText(@"C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\bin\Debug\Users.txt"))
 
             {
@@ -107,7 +107,7 @@ namespace Hangman.ViewModels
                 {
                     if (line.IndexOf(name) >= 0)
                     {
-                        //Skip the line
+                        
                         continue;
                     }
                     else
@@ -119,6 +119,25 @@ namespace Hangman.ViewModels
             CurrentUser.UserName = "";
             CurrentUser.ImagePath = "";
         }
+
+        private void Close()
+        {
+            System.Environment.Exit(0);
+        }
+
+        private ICommand closeCommand;
+        public ICommand CloseCommand
+        {
+            get
+            {
+                if (closeCommand == null)
+                {
+                    closeCommand = new RelayCommand(Close);
+                }
+                return closeCommand;
+            }
+        }
+
 
         private ICommand addCommand;
         public ICommand AddCommand

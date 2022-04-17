@@ -1,1 +1,3 @@
-asdasd C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar2.PNG 0 0
+Alex C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar1.PNG 0 0
+Maria C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar6.PNG 0 0
+Ion C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar2.PNG 0 0
