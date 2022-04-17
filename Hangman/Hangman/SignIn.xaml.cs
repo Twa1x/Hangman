@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hangman.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,10 @@ namespace Hangman
     /// </summary>
     public partial class SignIn : Window
     {
+
+        
+
+      
         public SignIn()
         {
             InitializeComponent();

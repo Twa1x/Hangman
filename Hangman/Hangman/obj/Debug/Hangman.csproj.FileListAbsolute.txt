@@ -34,3 +34,4 @@ C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\Hangman.csproj
 C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\InputDialog.g.cs
 C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\InputDialog.baml
+C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\Hangman.csproj.SuggestedBindingRedirects.cache

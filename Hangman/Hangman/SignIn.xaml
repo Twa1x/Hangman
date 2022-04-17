@@ -12,12 +12,12 @@
     </Window.DataContext>
     <Grid>
         <Button Content="New User" Command="{Binding AddCommand}"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,223,0,0"/>
-        <Button Content="Delete User" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="128,223,0,0"/>
+        <Button Content="Delete User" Command="{Binding DeleteCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="128,223,0,0"/>
         <Button Content="Play" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" RenderTransformOrigin="2.415,7.457" Margin="512,348,0,0"/>
         <Button Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="651,348,0,0"/>
-        <Image Source ="{Binding CurrentUser.ImagePath}" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="152" Margin="544,72,0,0"/>
+        <Image  Source ="{Binding CurrentUser.ImagePath}" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="152" Margin="544,72,0,0"/>
         <Button  Name="Avatar" Content="Choose avatar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="107" RenderTransformOrigin="6.872,7.907" Margin="563,223,0,0"  Command="{Binding AvatarCommand}"/>
-        <DataGrid HorizontalAlignment="Left" Height="138" Margin="10,34,0,0" VerticalAlignment="Top" Width="407" ItemsSource="{Binding Users}" SelectedItem="{Binding CurrentUser}" AutoGenerateColumns="False">
+        <DataGrid  Name ="dataGrid" HorizontalAlignment="Left" Height="138" Margin="10,34,0,0" VerticalAlignment="Top" Width="407" ItemsSource="{Binding Users}" SelectedItem="{Binding CurrentUser}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nume" Binding="{Binding UserName}" Width="100" />
                 <DataGridTextColumn Header="ImagePath" Binding="{Binding ImagePath}" Width="300" />
