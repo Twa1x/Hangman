@@ -35,3 +35,5 @@ C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\GeneratedInter
 C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\InputDialog.g.cs
 C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\InputDialog.baml
 C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\Hangman.csproj.SuggestedBindingRedirects.cache
+C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\PlayGame.g.cs
+C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\PlayGame.baml

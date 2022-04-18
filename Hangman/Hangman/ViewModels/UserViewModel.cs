@@ -72,7 +72,7 @@ namespace Hangman.ViewModels
         {
             ObservableCollection<User> localUsers = new ObservableCollection<User>();
 
-            string fileName = @"C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\bin\Debug\Users.txt";
+            string fileName = @".\Users.txt";
             IEnumerable<string> lines = File.ReadLines(fileName);
             foreach (string line in lines)
             {
@@ -83,7 +83,7 @@ namespace Hangman.ViewModels
                 foreach (string word in subs)
                 {
                     if (i == 0) { user.UserName = word; }
-                    if (i == 1) { user.ImagePath =  word; }
+                    if (i == 1) { user.ImagePath = word; }
                     if (i == 2) { user.GamesWin = word; }
                     if (i == 3) { user.GamesOver = word; }
                     i++;
@@ -97,17 +97,18 @@ namespace Hangman.ViewModels
 
         private void Delete()
         {
+            string fileName = @".\Users.txt";
             string name = CurrentUser.UserName;
-            string[] Lines = File.ReadAllLines(@"C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\bin\Debug\Users.txt");
-            File.Delete(@"C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\bin\Debug\Users.txt");
-            using (StreamWriter sw = File.AppendText(@"C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\bin\Debug\Users.txt"))
+            string[] Lines = File.ReadAllLines(fileName);
+            File.Delete(fileName);
+            using (StreamWriter sw = File.AppendText(fileName))
 
             {
                 foreach (string line in Lines)
                 {
                     if (line.IndexOf(name) >= 0)
                     {
-                        
+
                         continue;
                     }
                     else
@@ -123,6 +124,13 @@ namespace Hangman.ViewModels
         private void Close()
         {
             System.Environment.Exit(0);
+        }
+
+        private void Play()
+        {
+            PlayGame playGame  = new PlayGame(); 
+            playGame.Show();
+
         }
 
         private ICommand closeCommand;
@@ -165,7 +173,19 @@ namespace Hangman.ViewModels
                 return deleteCommand;
             }
         }
+        public ICommand playCommand;
 
+        public ICommand PlayCommand
+        {
+            get
+            {
+                if (avatarCommand == null)
+                {
+                    avatarCommand = new RelayCommand(Play);
+                }
+                return avatarCommand;
+            }
+        }
 
         private ICommand avatarCommand;
 
