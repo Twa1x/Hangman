@@ -12,7 +12,8 @@
         <viewmodels:UserViewModel/>
     </Window.DataContext>
     <Grid x:Name="GameGrid" Width="495" Height="320">
-    <Menu Height="25" 
+      
+    <Menu x:Name="Menu" Height="25" 
               HorizontalAlignment="Left"
               VerticalAlignment="Top">
             <Menu.ItemsPanel>
@@ -20,6 +21,7 @@
                     <DockPanel HorizontalAlignment="Center"/>
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
+        
             <MenuItem Header="File" 
                       FontSize="15"
                       Width="50"
@@ -38,6 +40,7 @@
                           />
                 <MenuItem x:Name="Statistics" 
                           Header="Statistics" 
+                          Command="{Binding StatisticsCommand}"
                          
                           />
                 <MenuItem x:Name="Exit" 
@@ -50,6 +53,12 @@
                       FontSize="15"
                       Width="85"
                      >
+                <MenuItem x:Name="AllCategories" 
+                          Header="AllCategories" 
+                          IsChecked="False"
+                          Click="AllCategories_Click"
+                        
+                         />
                 
                 <MenuItem x:Name="Cars" 
                           Header="Cars" 
@@ -78,6 +87,7 @@
                           Click="Rivers_Click"
                           />
             </MenuItem>
+          
 
 
         </Menu>

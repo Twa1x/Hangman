@@ -41,15 +41,8 @@ namespace Hangman.ViewModels
             {
                 currentUser.UserName = inputDialog.Answer;
             }
-            CurrentUser.GamesWin = "0";
-            CurrentUser.GamesOver = "0";
             Users.Add(CurrentUser);
-
-            string lines =
-
-           currentUser.UserName + " " + currentUser.ImagePath + " " + CurrentUser.GamesWin + " " + CurrentUser.GamesOver;
-
-
+            string lines = CurrentUser.Concatenate();
             File.AppendAllText("Users.txt", lines);
             File.AppendAllText("Users.txt", "\n");
 
@@ -86,6 +79,11 @@ namespace Hangman.ViewModels
                     if (i == 1) { user.ImagePath = word; }
                     if (i == 2) { user.GamesWin = word; }
                     if (i == 3) { user.GamesOver = word; }
+                    if (i == 4) { user.GamesWinCars = word; }
+                    if (i == 5) { user.GamesWinRivers = word; }
+                    if (i == 6) { user.GamesWinStates = word; }
+                    if (i == 7) { user.GamesWinMountains = word; }
+                    if (i == 8) { user.GamesWinMovies = word; }
                     i++;
                 }
                 localUsers.Add(user);
@@ -128,8 +126,16 @@ namespace Hangman.ViewModels
 
         private void Play()
         {
-            PlayGame playGame  = new PlayGame(); 
+            PlayGame playGame = new PlayGame(CurrentUser);
             playGame.Show();
+
+        }
+
+        private void Statistics()
+        {
+            string fileName = @".\Users.txt";
+            string name = CurrentUser.UserName;
+            string[] Lines = File.ReadAllLines(fileName);
 
         }
 
@@ -160,6 +166,20 @@ namespace Hangman.ViewModels
             }
         }
 
+     
+
+        private ICommand statisticsCommand;
+        public ICommand StatisticsCommand
+        {
+            get
+            {
+                if (statisticsCommand == null)
+                {
+                    statisticsCommand = new RelayCommand(Statistics);
+                }
+                return statisticsCommand;
+            }
+        }
 
         private ICommand deleteCommand;
         public ICommand DeleteCommand
