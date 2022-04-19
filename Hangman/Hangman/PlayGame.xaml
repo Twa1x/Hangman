@@ -12,7 +12,8 @@
         <viewmodels:UserViewModel/>
     </Window.DataContext>
     <Grid x:Name="GameGrid" Width="495" Height="320">
-      
+        <Grid.Children>
+            
     <Menu x:Name="Menu" Height="25" 
               HorizontalAlignment="Left"
               VerticalAlignment="Top">
@@ -87,7 +88,13 @@
                           Click="Rivers_Click"
                           />
             </MenuItem>
-          
+
+            <MenuItem Header="Help"   FontSize="15"
+                      Width="50">
+                <MenuItem Header="About"  Command="{Binding HelpCommand}" />
+
+            </MenuItem>
+
 
 
         </Menu>
@@ -95,5 +102,6 @@
         
 
 
+        </Grid.Children>
     </Grid>
 </Window>

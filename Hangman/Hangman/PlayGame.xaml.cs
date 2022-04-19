@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Hangman
 {
@@ -20,15 +21,22 @@ namespace Hangman
     /// Interaction logic for PlayGame.xaml
     /// </summary>
     /// 
+
+
+
     public enum GameLanguage
     {
         En,
-       
+
     }
- 
+
 
     public partial class PlayGame : Window
     {
+
+        DispatcherTimer dispatcherTimer = new DispatcherTimer();
+        private int delay = 60;
+        private DateTime deadline;
         private Game HangmanGame { get; set; }
 
         private int wins;
@@ -36,7 +44,11 @@ namespace Hangman
         private List<Label> Labels { get; set; }
         private Image StageImage { get; set; }
 
+        Label labelTimer = new Label();
+
         private User _currentUser;
+
+
         public PlayGame(User currentUser)
         {
             wins = 0;
@@ -45,35 +57,69 @@ namespace Hangman
             Buttons = new List<Button>();
             CreateNewGameBtn();
 
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+
             _currentUser = currentUser;
             Cars.IsChecked = false;
             Mountains.IsChecked = false;
             Movies.IsChecked = false;
             Rivers.IsChecked = false;
             States.IsChecked = false;
+
+            deadline = DateTime.Now.AddSeconds(delay);
+            dispatcherTimer.Start();
+            StartTimer();
+
         }
-      
-       
+
+
+        private void StartTimer()
+        {
+            //se seteaza momentul in care trebuie sa se opreasca timer-ul
+            //se adauga la data curenta un numar de secunde egal cu delay-ul
+            //mai exact, peste 20 de secunde, trebuie sa se opreasca timer-ul
+            //se pot adauga si minute, ore, etc... la data curenta
+            deadline = DateTime.Now.AddSeconds(delay);
+            dispatcherTimer.Start();
+        }
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            int secondsRemaining = (deadline - DateTime.Now).Seconds;
+            if (secondsRemaining == 0)
+            {
+                dispatcherTimer.Stop();
+                dispatcherTimer.IsEnabled = false;
+                this.Close();
+                MessageBox.Show("Time has expired!");
+                delay = 60;
+            }
+            else
+            {
+                labelTimer.Content = secondsRemaining.ToString();
+            }
+        }
+
+
         private void NewGameBtnClick(object sender, RoutedEventArgs e)
         {
 
             if (wins == 5)
             {
-               
+
                 FinishGame("You Win 5 TIMES IN A ROW!");
-                if(AllCategories.IsChecked == true)
+                if (AllCategories.IsChecked == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "AllCategories");
                 }
-                if(Cars.IsChecked == true)
+                if (Cars.IsChecked == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "Cars");
                 }
-                if(Rivers.IsChecked==true)
+                if (Rivers.IsChecked == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "Rivers");
                 }
-                if(States.IsChecked == true)
+                if (States.IsChecked == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "CarsStates");
                 }
@@ -81,16 +127,16 @@ namespace Hangman
                 {
                     ChangeStatistic(_currentUser.UserName, "Mountains");
                 }
-                if(Movies.IsChecked == true)
+                if (Movies.IsChecked == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "Movies");
                 }
 
             }
             string[] tempWords = new string[50];
-           
+
             int counter = 0;
-            if(AllCategories.IsChecked == true)
+            if (AllCategories.IsChecked == true)
             {
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\AllCategories.txt"))
                 {
@@ -101,12 +147,12 @@ namespace Hangman
 
             }
             if (Cars.IsChecked == true)
-            { 
+            {
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\Cars.txt"))
                 {
 
                     tempWords[counter++] = line;
-                 
+
                 }
             }
             if (Movies.IsChecked == true)
@@ -150,15 +196,15 @@ namespace Hangman
 
 
             string[] words = new string[counter];
-        
-            for(int i = 0; i < counter; i++)
+
+            for (int i = 0; i < counter; i++)
             {
-                words[i]=tempWords[i];
+                words[i] = tempWords[i];
             }
-         
-        
+
+
             InitializeGameField(words[new Random().Next(0, words.Length)]);
-           
+
         }
 
         private void ChangeStatistic(string userName, string category)
@@ -175,7 +221,7 @@ namespace Hangman
                     if (line.IndexOf(userName) >= 0)
                     {
                         string[] tempLine = line.Split(' ');
-                     
+
                         switch (category)
                         {
                             case "Lost":
@@ -251,7 +297,7 @@ namespace Hangman
             }
 
             StageImage.Source = HangmanGame.GetStageImage();
-            
+
             if (Labels.Count(l => l.Content == null) == 0)
             {
                 FinishGame("You Win!");
@@ -263,7 +309,7 @@ namespace Hangman
                 FinishGame("You Lose!");
                 wins = 0;
                 GameGrid.Children[1].IsEnabled = true;
-                
+
             }
             else
             {
@@ -290,6 +336,7 @@ namespace Hangman
 
             CreateNewGameBtn();
             CreateLevels();
+            CreateLabel();
             CreateCharacterBtns(HangmanGame.Alphabet);
             CreateCharacterLbl(HangmanGame.Lenght);
         }
@@ -298,7 +345,7 @@ namespace Hangman
         private void CreateNewGameBtn()
         {
             Button button = new Button();
-            button.IsEnabled= false;
+            button.IsEnabled = false;
             button.VerticalAlignment = VerticalAlignment.Center;
             button.HorizontalAlignment = HorizontalAlignment.Right;
             button.Width = 150;
@@ -309,6 +356,16 @@ namespace Hangman
 
             GameGrid.Children.Add(button);
         }
+
+        private void CreateLabel()
+        {
+
+            labelTimer.Content = delay.ToString();
+            labelTimer.HorizontalAlignment = HorizontalAlignment.Center;
+            labelTimer.VerticalAlignment = VerticalAlignment.Center;
+            GameGrid.Children.Add(labelTimer);
+        }
+
 
         private void CreateLevels()
         {
@@ -345,7 +402,7 @@ namespace Hangman
             level3.Margin = new Thickness(0, 60, 0, 0);
             level3.Foreground = Brushes.Red;
             GameGrid.Children.Add(level3);
-            
+
 
             TextBlock level4 = new TextBlock();
             level4.Text = "LEVEL 4";
@@ -383,7 +440,7 @@ namespace Hangman
 
             GameGrid.Children.Add(StageImage);
         }
-     
+
         private void CreateCharacterLbl(int lenght)
         {
             for (int i = 0; i < lenght; i++)

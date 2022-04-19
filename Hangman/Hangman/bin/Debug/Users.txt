@@ -1,1 +1,2 @@
-asdasdasdsa C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar1.PNG 0 0 1 0 0 0 0
+Mihai C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar3.PNG 0 0 0 0 0 0 0
+Claudiu C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar2.PNG 0 0 1 0 0 0 0

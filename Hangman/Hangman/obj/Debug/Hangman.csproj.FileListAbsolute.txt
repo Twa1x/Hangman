@@ -37,3 +37,14 @@ C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\InputDialog.ba
 C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\Hangman.csproj.SuggestedBindingRedirects.cache
 C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\PlayGame.g.cs
 C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\PlayGame.baml
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\InputDialog.g.cs
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\PlayGame.g.cs
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\SignIn.g.cs
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\InputDialog.baml
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\PlayGame.baml
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\SignIn.baml
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\StatisticsDialog.g.cs
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\StatisticsDialog.baml
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\HelpDialog.g.cs
+C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\HelpDialog.baml

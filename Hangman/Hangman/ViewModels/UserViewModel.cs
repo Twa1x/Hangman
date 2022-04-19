@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 
@@ -135,8 +136,26 @@ namespace Hangman.ViewModels
         {
             string fileName = @".\Users.txt";
             string name = CurrentUser.UserName;
+            string firstLine = "Nume---------------Path Imagine------------------------------------------------Loses-WinsAllCategories-Cars-Rivers-States-Mountains-Movies\n";
             string[] Lines = File.ReadAllLines(fileName);
 
+            TextBox localTextBlock = new TextBox();
+            localTextBlock.Text = firstLine;
+            foreach (string line in Lines)
+            {
+                localTextBlock.Text += (line+"\n");
+            }
+            Console.WriteLine(localTextBlock.Text);
+            StatisticsDialog statisticsDialog = new StatisticsDialog(localTextBlock);
+            statisticsDialog.Show();
+
+        }
+
+        private void Help()
+        {
+
+            HelpDialog helpDialog = new HelpDialog();
+            helpDialog.Show();  
         }
 
         private ICommand closeCommand;
@@ -166,7 +185,22 @@ namespace Hangman.ViewModels
             }
         }
 
-     
+
+
+        private ICommand helpCommand;
+
+        public ICommand HelpCommand
+        {
+            get
+            {
+                if(helpCommand == null)
+                {
+                    helpCommand = new RelayCommand(Help);
+
+                }
+                return helpCommand;
+            }
+        }
 
         private ICommand statisticsCommand;
         public ICommand StatisticsCommand
@@ -213,10 +247,10 @@ namespace Hangman.ViewModels
         {
             get
             {
-                if (avatarCommand == null)
-                {
+               
+               
                     avatarCommand = new RelayCommand(ChooseAvatar);
-                }
+                
                 return avatarCommand;
             }
         }
