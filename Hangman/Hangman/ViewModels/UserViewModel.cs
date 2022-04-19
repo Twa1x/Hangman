@@ -129,6 +129,7 @@ namespace Hangman.ViewModels
         {
             PlayGame playGame = new PlayGame(CurrentUser);
             playGame.Show();
+            
 
         }
 

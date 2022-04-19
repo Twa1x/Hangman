@@ -44,10 +44,16 @@ namespace Hangman
         private List<Label> Labels { get; set; }
         private Image StageImage { get; set; }
 
+        Button backButton = new Button();
+
         Label labelTimer = new Label();
-
+        TextBlock level1 = new TextBlock();
+        TextBlock level2 = new TextBlock();
+        TextBlock level3 = new TextBlock();
+        TextBlock level4 = new TextBlock();
+        TextBlock level5 = new TextBlock();
         private User _currentUser;
-
+        Button button = new Button();
 
         public PlayGame(User currentUser)
         {
@@ -60,11 +66,11 @@ namespace Hangman
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
 
             _currentUser = currentUser;
-            Cars.IsChecked = false;
-            Mountains.IsChecked = false;
-            Movies.IsChecked = false;
-            Rivers.IsChecked = false;
-            States.IsChecked = false;
+            Cars.IsEnabled = true;
+            Mountains.IsEnabled = true;
+            Movies.IsEnabled = true;
+            Rivers.IsEnabled = true;
+            States.IsEnabled = true;
 
             deadline = DateTime.Now.AddSeconds(delay);
             dispatcherTimer.Start();
@@ -75,10 +81,7 @@ namespace Hangman
 
         private void StartTimer()
         {
-            //se seteaza momentul in care trebuie sa se opreasca timer-ul
-            //se adauga la data curenta un numar de secunde egal cu delay-ul
-            //mai exact, peste 20 de secunde, trebuie sa se opreasca timer-ul
-            //se pot adauga si minute, ore, etc... la data curenta
+
             deadline = DateTime.Now.AddSeconds(delay);
             dispatcherTimer.Start();
         }
@@ -99,44 +102,56 @@ namespace Hangman
             }
         }
 
-
+        private void BackBtnClick(object sender, RoutedEventArgs e)
+        {
+            PlayGame playGame = new PlayGame(_currentUser);
+            playGame.Show();
+            this.Close();
+        }
         private void NewGameBtnClick(object sender, RoutedEventArgs e)
         {
-
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            deadline = DateTime.Now.AddSeconds(delay);
+            dispatcherTimer.Start();
             if (wins == 5)
             {
 
                 FinishGame("You Win 5 TIMES IN A ROW!");
-                if (AllCategories.IsChecked == true)
+                if (AllCategories.IsEnabled == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "AllCategories");
                 }
-                if (Cars.IsChecked == true)
+                if (Cars.IsEnabled == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "Cars");
                 }
-                if (Rivers.IsChecked == true)
+                if (Rivers.IsEnabled == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "Rivers");
                 }
-                if (States.IsChecked == true)
+                if (States.IsEnabled == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "CarsStates");
                 }
-                if (Mountains.IsChecked == true)
+                if (Mountains.IsEnabled == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "Mountains");
                 }
-                if (Movies.IsChecked == true)
+                if (Movies.IsEnabled == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "Movies");
                 }
+                wins = 0;
 
             }
+
+
+            
+
             string[] tempWords = new string[50];
 
             int counter = 0;
-            if (AllCategories.IsChecked == true)
+            if (AllCategories.IsEnabled == true)
             {
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\AllCategories.txt"))
                 {
@@ -146,7 +161,7 @@ namespace Hangman
                 }
 
             }
-            if (Cars.IsChecked == true)
+            if (Cars.IsEnabled == true)
             {
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\Cars.txt"))
                 {
@@ -155,7 +170,7 @@ namespace Hangman
 
                 }
             }
-            if (Movies.IsChecked == true)
+            if (Movies.IsEnabled == true)
             {
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\Movies.txt"))
                 {
@@ -164,7 +179,7 @@ namespace Hangman
 
                 }
             }
-            if (Rivers.IsChecked == true)
+            if (Rivers.IsEnabled == true)
             {
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\Rivers.txt"))
                 {
@@ -173,7 +188,7 @@ namespace Hangman
 
                 }
             }
-            if (States.IsChecked == true)
+            if (States.IsEnabled == true)
             {
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\States.txt"))
                 {
@@ -183,7 +198,7 @@ namespace Hangman
                 }
             }
 
-            if (Mountains.IsChecked == true)
+            if (Mountains.IsEnabled == true)
             {
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\Mountains.txt"))
                 {
@@ -302,14 +317,32 @@ namespace Hangman
             {
                 FinishGame("You Win!");
                 wins++;
+                switch (wins)
+                {
+                    case 1: { level1.Foreground = Brushes.LightGreen; break; }
+                    case 2: { level2.Foreground = Brushes.LightGreen; break; }
+                    case 3: { level3.Foreground = Brushes.LightGreen; break; }
+                    case 4: { level4.Foreground = Brushes.LightGreen; break; }
+                    case 5: { level5.Foreground = Brushes.LightGreen; break; }
+                    default:
+                        break;
+                }
+               
+              
                 GameGrid.Children[1].IsEnabled = true;
+                backButton.IsEnabled = true;
             }
             else if (HangmanGame.IsGameOver())
             {
                 FinishGame("You Lose!");
+                level1.Foreground = Brushes.Red;
+                level2.Foreground = Brushes.Red;
+                level3.Foreground = Brushes.Red;
+                level4.Foreground = Brushes.Red;
+                level5.Foreground = Brushes.Red;
                 wins = 0;
                 GameGrid.Children[1].IsEnabled = true;
-
+                backButton.IsEnabled=true;
             }
             else
             {
@@ -337,6 +370,7 @@ namespace Hangman
             CreateNewGameBtn();
             CreateLevels();
             CreateLabel();
+            CreateBackGameBtn();
             CreateCharacterBtns(HangmanGame.Alphabet);
             CreateCharacterLbl(HangmanGame.Lenght);
         }
@@ -344,7 +378,7 @@ namespace Hangman
         #region Game Field Initialization
         private void CreateNewGameBtn()
         {
-            Button button = new Button();
+           
             button.IsEnabled = false;
             button.VerticalAlignment = VerticalAlignment.Center;
             button.HorizontalAlignment = HorizontalAlignment.Right;
@@ -355,6 +389,20 @@ namespace Hangman
             button.Click += new RoutedEventHandler(NewGameBtnClick);
 
             GameGrid.Children.Add(button);
+        }
+
+        private void CreateBackGameBtn()
+        {
+            backButton.IsEnabled = false;
+            backButton.VerticalAlignment = VerticalAlignment.Center;
+            backButton.HorizontalAlignment = HorizontalAlignment.Right;
+            backButton.Width = 150;
+            backButton.Height = 35;
+            backButton.Name = "_back";
+            backButton.Content = "Back to categories";       
+            GameGrid.Children.Add(backButton);
+            backButton.Margin = new Thickness(0,100,0,0);
+            backButton.Click += new RoutedEventHandler(BackBtnClick);
         }
 
         private void CreateLabel()
@@ -369,19 +417,19 @@ namespace Hangman
 
         private void CreateLevels()
         {
-            TextBlock level1 = new TextBlock();
+
             level1.Text = "LEVEL 1";
             level1.Name = "lv1";
             level1.VerticalAlignment = VerticalAlignment.Center;
             level1.HorizontalAlignment = HorizontalAlignment.Left;
             level1.Width = 150;
             level1.Height = 35;
-            level1.Foreground = Brushes.Red;
+           // level1.Foreground = Brushes.Red;
 
             GameGrid.Children.Add(level1);
 
 
-            TextBlock level2 = new TextBlock();
+
             level2.Text = "LEVEL 2";
             level2.Name = "lv2";
             level2.VerticalAlignment = VerticalAlignment.Center;
@@ -389,10 +437,10 @@ namespace Hangman
             level2.Width = 150;
             level2.Height = 35;
             level2.Margin = new Thickness(0d, 30d, 0d, 0d);
-            level2.Foreground = Brushes.Red;
+           // level2.Foreground = Brushes.Red;
             GameGrid.Children.Add(level2);
 
-            TextBlock level3 = new TextBlock();
+
             level3.Text = "LEVEL 3";
             level3.Name = "lv3";
             level3.VerticalAlignment = VerticalAlignment.Center;
@@ -400,11 +448,11 @@ namespace Hangman
             level3.Width = 150;
             level3.Height = 35;
             level3.Margin = new Thickness(0, 60, 0, 0);
-            level3.Foreground = Brushes.Red;
+           //level3.Foreground = Brushes.Red;
             GameGrid.Children.Add(level3);
 
 
-            TextBlock level4 = new TextBlock();
+
             level4.Text = "LEVEL 4";
             level4.Name = "lv4";
             level4.VerticalAlignment = VerticalAlignment.Center;
@@ -412,18 +460,18 @@ namespace Hangman
             level4.Width = 150;
             level4.Height = 35;
             level4.Margin = new Thickness(0, 90, 0, 0);
-            level4.Foreground = Brushes.Red;
+           // level4.Foreground = Brushes.Red;
             GameGrid.Children.Add(level4);
 
 
-            TextBlock level5 = new TextBlock();
+
             level5.Text = "LEVEL 5";
             level5.Name = "lv5";
             level5.VerticalAlignment = VerticalAlignment.Center;
             level5.HorizontalAlignment = HorizontalAlignment.Left;
             level5.Width = 150;
             level5.Height = 35;
-            level5.Foreground = Brushes.Red;
+           // level5.Foreground = Brushes.Red;
             level5.Margin = new Thickness(0, 120, 0, 0);
             GameGrid.Children.Add(level5);
 
@@ -451,13 +499,13 @@ namespace Hangman
                 label.HorizontalContentAlignment = HorizontalAlignment.Center;
                 label.VerticalContentAlignment = VerticalAlignment.Center;
                 label.BorderThickness = new Thickness(1, 1, 1, 1);
-                label.BorderBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x2D, 0x2D, 0x30));
+                label.BorderBrush = Brushes.Red;
                 label.Height = label.Width = 38;
                 label.HorizontalAlignment = HorizontalAlignment.Left;
                 label.VerticalAlignment = VerticalAlignment.Top;
-
+                label.Background = Brushes.White;
                 label.Name = "Character" + i.ToString();
-
+               
                 label.Margin = new Thickness(i * label.Width, 0d, 0d, 0d);
 
                 Labels.Add(label);
@@ -501,38 +549,96 @@ namespace Hangman
 
         private void Cars_Click(object sender, RoutedEventArgs e)
         {
-            Cars.IsChecked = true;
-            GameGrid.Children[1].IsEnabled = true;
+            Cars.IsEnabled = true;
+            Movies.IsEnabled = false;
+            AllCategories.IsEnabled = false;
+            Rivers.IsEnabled = false;
+            States.IsEnabled = false;
+            Mountains.IsEnabled = false;
+            button.IsEnabled = true;
+       
         }
 
         private void Movies_Click(object sender, RoutedEventArgs e)
         {
-            Movies.IsChecked = true;
-            GameGrid.Children[1].IsEnabled = true;
+            Movies.IsEnabled = true;
+            
+            AllCategories.IsEnabled = false;
+            Cars.IsEnabled = false;
+
+            Rivers.IsEnabled = false;
+            States.IsEnabled = false;
+            Mountains.IsEnabled = false;
+            button.IsEnabled = true;
+
         }
 
         private void States_Click(object sender, RoutedEventArgs e)
         {
-            States.IsChecked = true;
-            GameGrid.Children[1].IsEnabled = true;
+            States.IsEnabled = true;
+            AllCategories.IsEnabled = false;
+            Cars.IsEnabled = false;
+            Rivers.IsEnabled = false;
+            Movies.IsEnabled = false;
+            Mountains.IsEnabled = false;
+            button.IsEnabled = true;
+
         }
 
         private void Mountains_Click(object sender, RoutedEventArgs e)
         {
-            Mountains.IsChecked = true;
-            GameGrid.Children[1].IsEnabled = true;
+            Mountains.IsEnabled = true;
+            AllCategories.IsEnabled = false;
+            Cars.IsEnabled = false;
+            Rivers.IsEnabled = false;
+            States.IsEnabled = false;
+            Movies.IsEnabled = false;
+            button.IsEnabled = true;
+   
         }
 
         private void Rivers_Click(object sender, RoutedEventArgs e)
         {
-            Rivers.IsChecked = true;
-            GameGrid.Children[1].IsEnabled = true;
+            Rivers.IsEnabled = true;
+            AllCategories.IsEnabled = false;
+            Cars.IsEnabled = false;
+            Movies.IsEnabled = false;
+            States.IsEnabled = false;
+            Mountains.IsEnabled = false;
+            button.IsEnabled = true;
+      
         }
 
         private void AllCategories_Click(object sender, RoutedEventArgs e)
         {
-            AllCategories.IsChecked = true;
-            GameGrid.Children[1].IsEnabled = true;
+            AllCategories.IsEnabled = true;
+            Movies.IsEnabled = false;
+            Cars.IsEnabled = false;
+            Rivers.IsEnabled = false;
+            States.IsEnabled = false;
+            Mountains.IsEnabled = false;
+            button.IsEnabled = true;
+          
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            AllCategories.IsEnabled = true;
+            Movies.IsEnabled = true;
+            Cars.IsEnabled = true;
+            Rivers.IsEnabled = true;
+            States.IsEnabled = true;
+            Mountains.IsEnabled = true;
+            button.IsEnabled = false;
+        }
+
+      
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+         
+            this.Close();
+          
         }
     }
 }

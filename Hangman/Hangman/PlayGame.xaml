@@ -11,95 +11,32 @@
     <Window.DataContext>
         <viewmodels:UserViewModel/>
     </Window.DataContext>
+    <Window.Background>
+        <ImageBrush ImageSource="/Resources/backgroundGame.jpg" Stretch="Fill" />
+    </Window.Background>
     <Grid x:Name="GameGrid" Width="495" Height="320">
         <Grid.Children>
             
-    <Menu x:Name="Menu" Height="25" 
-              HorizontalAlignment="Left"
-              VerticalAlignment="Top">
-            <Menu.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <DockPanel HorizontalAlignment="Center"/>
-                </ItemsPanelTemplate>
-            </Menu.ItemsPanel>
-        
-            <MenuItem Header="File" 
-                      FontSize="15"
-                      Width="50"
-                      >
-                <MenuItem x:Name="NewGame"
-                          Header="New Game" 
-                          
-                          />
-                <MenuItem x:Name="OpenGame" 
-                          Header="Open Game" 
-                          
-                         />
-                <MenuItem x:Name="SaveGame" 
-                          Header="Save Game" 
-                         
-                          />
-                <MenuItem x:Name="Statistics" 
-                          Header="Statistics" 
-                          Command="{Binding StatisticsCommand}"
-                         
-                          />
-                <MenuItem x:Name="Exit" 
-                          Header="Exit" 
-                          
-                          />
-            </MenuItem>
-
-            <MenuItem Header="Categories"
-                      FontSize="15"
-                      Width="85"
-                     >
-                <MenuItem x:Name="AllCategories" 
-                          Header="AllCategories" 
-                          IsChecked="False"
-                          Click="AllCategories_Click"
-                        
-                         />
-                
-                <MenuItem x:Name="Cars" 
-                          Header="Cars" 
-                          IsChecked="False"
-                          Click="Cars_Click"
-                        
-                         />
-                <MenuItem x:Name="Movies" 
-                          Header="Movies" 
-                          IsChecked="False"
-                          Click="Movies_Click"
-                        />
-                <MenuItem x:Name="States" 
-                          Header="States" 
-                          IsChecked="False"
-                          Click="States_Click"
-                         />
-                <MenuItem x:Name="Mountains" 
-                          Header="Mountains" 
-                          IsChecked="False"
-                          Click="Mountains_Click"
-                         />
-                <MenuItem x:Name="Rivers" 
-                          Header="Rivers" 
-                          IsChecked="False"
-                          Click="Rivers_Click"
-                          />
-            </MenuItem>
-
-            <MenuItem Header="Help"   FontSize="15"
-                      Width="50">
-                <MenuItem Header="About"  Command="{Binding HelpCommand}" />
-
-            </MenuItem>
+            <Label Content="       CHOOSE THE CATEGORY" HorizontalAlignment="Left" Height="28" Margin="0,64,0,0" VerticalAlignment="Top" Width="185" Foreground="White">
+                <Label.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="#FFE01D1D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.BorderBrush>
+            </Label>
+            <Button Content="AllCategories" Name="AllCategories" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Margin="10,92,0,0" Click="AllCategories_Click"/>
+            <Button Content="Movies" Name="Movies" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Margin="10,117,0,0" Click="Movies_Click"/>
+            <Button Content="Cars"  Name ="Cars" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Margin="10,142,0,0" Click="Cars_Click"/>
+            <Button Content="States" Name="States" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Margin="10,167,0,0" Click="States_Click"/>
+            <Button Content="Mountains" Name="Mountains" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Margin="10,192,0,0" Click="Mountains_Click"/>
+            <Button Content="Rivers"  Name ="Rivers" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Margin="10,217,0,0" Click="Rivers_Click"/>
+            <Button Content="Refresh" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.716,2.579" Margin="61,242,0,0" Click="Refresh_Click"/>
+            <Button Content="About"  Command ="{Binding HelpCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="132,290,0,0" />
+            <Button Content="Statistics" Command="{Binding StatisticsCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,290,0,0"/>
+            <Button Content="Exit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="360,290,0,0" Click="Exit_Click"/>
 
 
-
-        </Menu>
-
-        
 
 
         </Grid.Children>

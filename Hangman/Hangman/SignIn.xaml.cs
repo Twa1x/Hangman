@@ -40,5 +40,6 @@ namespace Hangman
             Avatar.IsEnabled = true;
         }
 
+     
     }
 }

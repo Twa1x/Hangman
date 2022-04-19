@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\
+C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\obj\Debug\
 Hangman
 none
 false
 DEBUG;TRACE
-C:\Users\Alex\Documents\GitHub\Hangman\Hangman\Hangman\App.xaml
+C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\App.xaml
 6-974962933
 
 171267437177
 13-1310406943
 HelpDialog.xaml;InputDialog.xaml;MainWindow.xaml;PlayGame.xaml;SignIn.xaml;StatisticsDialog.xaml;
 
-True
+False
 
