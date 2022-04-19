@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="StatisticsDialog" Height="450" Width="800">
     <Grid>
-        <TextBlock Name="txtBlock" TextWrapping="Wrap"/>
+        <TextBox Name="txtBox" TextWrapping="Wrap"  IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
 
     </Grid>
 </Window>

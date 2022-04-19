@@ -74,7 +74,7 @@ namespace Hangman
 
             deadline = DateTime.Now.AddSeconds(delay);
             dispatcherTimer.Start();
-            StartTimer();
+          
 
         }
 
@@ -95,6 +95,8 @@ namespace Hangman
                 this.Close();
                 MessageBox.Show("Time has expired!");
                 delay = 60;
+
+                ChangeStatistic(_currentUser.UserName, "Lost");
             }
             else
             {
@@ -110,6 +112,7 @@ namespace Hangman
         }
         private void NewGameBtnClick(object sender, RoutedEventArgs e)
         {
+            StartTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             deadline = DateTime.Now.AddSeconds(delay);
             dispatcherTimer.Start();
@@ -241,48 +244,48 @@ namespace Hangman
                         {
                             case "Lost":
                                 {
-                                    int number = Int32.Parse(tempLine[2]);
-                                    tempLine[2] = (number + 1).ToString();
+                                    int number = Int32.Parse(tempLine[3]);
+                                    tempLine[3] = (number + 1).ToString();
                                     break;
                                 }
                             case "AllCategories":
                                 {
 
                                     int number = Int32.Parse(tempLine[2]);
-                                    tempLine[3] = (number + 1).ToString();
+                                    tempLine[2] = (number + 1).ToString();
                                     break;
                                 }
                             case "Cars":
                                 {
-                                    int number = Int32.Parse(tempLine[2]);
+                                    int number = Int32.Parse(tempLine[4]);
                                     tempLine[4] = (number + 1).ToString();
                                     break;
                                 }
                             case "Rivers":
                                 {
 
-                                    int number = Int32.Parse(tempLine[2]);
+                                    int number = Int32.Parse(tempLine[5]);
                                     tempLine[5] = (number + 1).ToString();
                                     break;
                                 }
                             case "States":
                                 {
 
-                                    int number = Int32.Parse(tempLine[2]);
+                                    int number = Int32.Parse(tempLine[6]);
                                     tempLine[6] = (number + 1).ToString();
                                     break;
                                 }
                             case "Mountains":
                                 {
 
-                                    int number = Int32.Parse(tempLine[2]);
+                                    int number = Int32.Parse(tempLine[7]);
                                     tempLine[7] = (number + 1).ToString();
                                     break;
                                 }
                             case "Movies":
                                 {
 
-                                    int number = Int32.Parse(tempLine[2]);
+                                    int number = Int32.Parse(tempLine[8]);
                                     tempLine[8] = (number + 1).ToString();
                                     break;
                                 }
@@ -343,6 +346,7 @@ namespace Hangman
                 wins = 0;
                 GameGrid.Children[1].IsEnabled = true;
                 backButton.IsEnabled=true;
+                ChangeStatistic(_currentUser.UserName, "Lost");
             }
             else
             {

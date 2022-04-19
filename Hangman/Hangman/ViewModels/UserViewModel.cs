@@ -129,7 +129,7 @@ namespace Hangman.ViewModels
         {
             PlayGame playGame = new PlayGame(CurrentUser);
             playGame.Show();
-            
+
 
         }
 
@@ -137,17 +137,18 @@ namespace Hangman.ViewModels
         {
             string fileName = @".\Users.txt";
             string name = CurrentUser.UserName;
-            string firstLine = "Nume---------------Path Imagine------------------------------------------------Loses-WinsAllCategories-Cars-Rivers-States-Mountains-Movies\n";
             string[] Lines = File.ReadAllLines(fileName);
-
-            TextBox localTextBlock = new TextBox();
-            localTextBlock.Text = firstLine;
+            TextBox localTextBox = new TextBox();
             foreach (string line in Lines)
             {
-                localTextBlock.Text += (line+"\n");
+                string[] words = line.Split(' ');
+
+                localTextBox.Text += ("Nume: " + words[0] + "\nImagePath: " + words[1] + "\nGames Lost: " + words[3] + "\nAllCategories Games Win: " + words[2] + "\nCars Games Win: " + words[4] 
+                    + "\nRivers Games Win: " + words[5] + "\nStates Games Win: " + words[6] + "\nMountains Games Win: " + words[7] + "\nMovies Games Win: " + words[8]);
+                localTextBox.Text += "\n--------------------------------------------------------------------------------------------------------------------------\n";
             }
-            Console.WriteLine(localTextBlock.Text);
-            StatisticsDialog statisticsDialog = new StatisticsDialog(localTextBlock);
+
+            StatisticsDialog statisticsDialog = new StatisticsDialog(localTextBox);
             statisticsDialog.Show();
 
         }
@@ -156,7 +157,7 @@ namespace Hangman.ViewModels
         {
 
             HelpDialog helpDialog = new HelpDialog();
-            helpDialog.Show();  
+            helpDialog.Show();
         }
 
         private ICommand closeCommand;
@@ -194,7 +195,7 @@ namespace Hangman.ViewModels
         {
             get
             {
-                if(helpCommand == null)
+                if (helpCommand == null)
                 {
                     helpCommand = new RelayCommand(Help);
 
@@ -248,10 +249,10 @@ namespace Hangman.ViewModels
         {
             get
             {
-               
-               
-                    avatarCommand = new RelayCommand(ChooseAvatar);
-                
+
+
+                avatarCommand = new RelayCommand(ChooseAvatar);
+
                 return avatarCommand;
             }
         }

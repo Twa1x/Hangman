@@ -23,7 +23,9 @@ namespace Hangman
         {
             
             InitializeComponent();
-            txtBlock.Text = textBox.Text;
+            txtBox.Text = textBox.Text;
         }
+
+       
     }
 }
