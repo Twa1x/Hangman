@@ -12,7 +12,7 @@ namespace Hangman.Models
 
         public string Word { get; private set; }
         public int Lenght { get; private set; }
-        private int Stage { get; set; }
+        public int Stage { get; set; }
         public char[] Alphabet { get; private set; }
 
         public Game(string word, GameLanguage lang)

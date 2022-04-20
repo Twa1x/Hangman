@@ -1,4 +1,1 @@
-Grecu C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar3.PNG 0 0 0 0 0 0 0
-Alex C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar4.PNG 0 0 0 0 0 0 0
-Vali C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar2.PNG 2 0 0 0 0 0 0
-Iacob C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar3.PNG 0 1 1 0 0 0 0
+Grecu C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar3.PNG 0 3 0 0 0 0 0

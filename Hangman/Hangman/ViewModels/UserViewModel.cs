@@ -71,7 +71,7 @@ namespace Hangman.ViewModels
             foreach (string line in lines)
             {
                 string[] subs = line.Split(' ');
-                Console.WriteLine(subs);
+            
                 int i = 0;
                 User user = new User();
                 foreach (string word in subs)
@@ -100,6 +100,7 @@ namespace Hangman.ViewModels
             string name = CurrentUser.UserName;
             string[] Lines = File.ReadAllLines(fileName);
             File.Delete(fileName);
+            File.Delete(currentUser.UserName + "SAVED.txt");
             using (StreamWriter sw = File.AppendText(fileName))
 
             {

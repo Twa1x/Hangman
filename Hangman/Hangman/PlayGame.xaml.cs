@@ -37,6 +37,8 @@ namespace Hangman
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private int delay = 60;
         private DateTime deadline;
+        //nume, categorie, cuvant,, litere corecte, stage, levele, timer; 
+        private string[] saveString = new string[8];
         private Game HangmanGame { get; set; }
 
         private int wins;
@@ -45,7 +47,7 @@ namespace Hangman
         private Image StageImage { get; set; }
 
         Button backButton = new Button();
-
+        Button saveButton = new Button();
         Label labelTimer = new Label();
         TextBlock level1 = new TextBlock();
         TextBlock level2 = new TextBlock();
@@ -62,7 +64,7 @@ namespace Hangman
             Labels = new List<Label>();
             Buttons = new List<Button>();
             CreateNewGameBtn();
-
+          
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
 
             _currentUser = currentUser;
@@ -74,7 +76,9 @@ namespace Hangman
 
             deadline = DateTime.Now.AddSeconds(delay);
             dispatcherTimer.Start();
-          
+
+            Imagine.Source = new BitmapImage(new Uri(currentUser.ImagePath, UriKind.Absolute));
+            labelNume.Content = currentUser.UserName;
 
         }
 
@@ -106,12 +110,54 @@ namespace Hangman
 
         private void BackBtnClick(object sender, RoutedEventArgs e)
         {
+
+            this.Close();
             PlayGame playGame = new PlayGame(_currentUser);
             playGame.Show();
-            this.Close();
+
+        }
+
+        private void SaveBtnClick(object sender, RoutedEventArgs e)
+        {
+            saveString[0] = "NUMELE USER-ULUI: " + _currentUser.UserName;
+           
+            switch (wins)
+            {
+                case 0: { saveString[5] = "LEVEL 0 "; break; }
+                case 1: { saveString[5] = "LEVEL 1 "; break; }
+                case 2: { saveString[5] = "LEVEL 2 "; break; }
+                case 3: { saveString[5] = "LEVEL 3 "; break; }
+                case 4: { saveString[5] = "LEVEL 4 "; break; }
+                case 5: { saveString[5] = "LEVEL 5 "; break; }
+                default:
+                    break;
+            }
+            saveString[4] = "NUMAR DE GRESELI: " + HangmanGame.Stage.ToString();
+            saveString[6] = "TIMP RAMAS: " + labelTimer.Content.ToString();
+
+
+            foreach (var item in saveString)
+            {
+                Console.WriteLine(item);
+            }
+            string path = _currentUser.UserName + "SAVED.txt";
+          
+          
+            
+                // Create a file to write to.
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    foreach(var item in saveString)
+                        sw.WriteLine(item);
+
+                }
+            
+
         }
         private void NewGameBtnClick(object sender, RoutedEventArgs e)
         {
+
+            saveString = new string[8];
             StartTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             deadline = DateTime.Now.AddSeconds(delay);
@@ -127,6 +173,7 @@ namespace Hangman
                 if (Cars.IsEnabled == true)
                 {
                     ChangeStatistic(_currentUser.UserName, "Cars");
+
                 }
                 if (Rivers.IsEnabled == true)
                 {
@@ -149,13 +196,15 @@ namespace Hangman
             }
 
 
-            
+
 
             string[] tempWords = new string[50];
-
+            saveString[3] += "LITERE CORECTE: ";
+            saveString[7] += "LITERE GRESITE: ";
             int counter = 0;
             if (AllCategories.IsEnabled == true)
             {
+                saveString[1] += "CATEGORIA: AllCategories";
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\AllCategories.txt"))
                 {
 
@@ -166,15 +215,16 @@ namespace Hangman
             }
             if (Cars.IsEnabled == true)
             {
+                saveString[1] += "CATEGORIA: Cars";
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\Cars.txt"))
                 {
 
                     tempWords[counter++] = line;
-
                 }
             }
             if (Movies.IsEnabled == true)
             {
+                saveString[1] += "CATEGORIA: Movies";
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\Movies.txt"))
                 {
 
@@ -184,6 +234,7 @@ namespace Hangman
             }
             if (Rivers.IsEnabled == true)
             {
+                saveString[1] += "CATEGORIA: Rivers";
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\Rivers.txt"))
                 {
 
@@ -193,6 +244,7 @@ namespace Hangman
             }
             if (States.IsEnabled == true)
             {
+                saveString[1] += "CATEGORIA: States";
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\States.txt"))
                 {
 
@@ -203,6 +255,7 @@ namespace Hangman
 
             if (Mountains.IsEnabled == true)
             {
+                saveString[1] += "CATEGORIA: Mountains";
                 foreach (string line in System.IO.File.ReadLines(@".\Categories\Mountains.txt"))
                 {
 
@@ -306,12 +359,15 @@ namespace Hangman
         {
             int[] temp = HangmanGame.TakeCharacter((sender as Button).Content.ToString()[0]);
 
+            
             for (int i = 0; i < temp.Length; i++)
             {
                 if (temp[i] == 1)
                 {
                     Labels[i].Content = HangmanGame.Word[i];
+                    saveString[3] += Labels[i].Content + ", ";
                 }
+                
             }
 
             StageImage.Source = HangmanGame.GetStageImage();
@@ -330,8 +386,8 @@ namespace Hangman
                     default:
                         break;
                 }
-               
-              
+
+
                 GameGrid.Children[1].IsEnabled = true;
                 backButton.IsEnabled = true;
             }
@@ -345,12 +401,15 @@ namespace Hangman
                 level5.Foreground = Brushes.Red;
                 wins = 0;
                 GameGrid.Children[1].IsEnabled = true;
-                backButton.IsEnabled=true;
+                backButton.IsEnabled = true;
                 ChangeStatistic(_currentUser.UserName, "Lost");
             }
             else
             {
                 (sender as Button).IsEnabled = false;
+                string chr = (sender as Button).Content.ToString();
+                if (!(saveString[3].ToString().Contains(chr)))
+                 saveString[7] += (sender as Button).Content + ", ";
             }
         }
 
@@ -362,6 +421,7 @@ namespace Hangman
 
         private void InitializeGameField(string word)
         {
+            saveString[2] += "CUVANTUL: " + word;
             HangmanGame = new Game(word, GameLanguage.En);
 
             Labels.Clear();
@@ -374,6 +434,7 @@ namespace Hangman
             CreateNewGameBtn();
             CreateLevels();
             CreateLabel();
+            CreateSaveGameBtn();
             CreateBackGameBtn();
             CreateCharacterBtns(HangmanGame.Alphabet);
             CreateCharacterLbl(HangmanGame.Lenght);
@@ -382,7 +443,7 @@ namespace Hangman
         #region Game Field Initialization
         private void CreateNewGameBtn()
         {
-           
+
             button.IsEnabled = false;
             button.VerticalAlignment = VerticalAlignment.Center;
             button.HorizontalAlignment = HorizontalAlignment.Right;
@@ -403,16 +464,33 @@ namespace Hangman
             backButton.Width = 150;
             backButton.Height = 35;
             backButton.Name = "_back";
-            backButton.Content = "Back to categories";       
+            backButton.Content = "Back to categories";
             GameGrid.Children.Add(backButton);
-            backButton.Margin = new Thickness(0,100,0,0);
+            backButton.Margin = new Thickness(0, 100, 0, 0);
             backButton.Click += new RoutedEventHandler(BackBtnClick);
+        }
+
+        private void CreateSaveGameBtn()
+        {
+            saveButton.IsEnabled = true;
+            saveButton.VerticalAlignment = VerticalAlignment.Center;
+            saveButton.HorizontalAlignment = HorizontalAlignment.Right;
+            saveButton.Width = 150;
+            saveButton.Height = 35;
+            saveButton.Name = "_save";
+            saveButton.Content = "Save the game!";
+            GameGrid.Children.Add(saveButton);
+            saveButton.Margin = new Thickness(0, 150, 0, 0);
+            saveButton.Click += new RoutedEventHandler(SaveBtnClick);
         }
 
         private void CreateLabel()
         {
 
             labelTimer.Content = delay.ToString();
+            labelTimer.Foreground = Brushes.Red;
+            labelTimer.FontSize = 16;
+            labelTimer.FontStyle = FontStyles.Oblique;
             labelTimer.HorizontalAlignment = HorizontalAlignment.Center;
             labelTimer.VerticalAlignment = VerticalAlignment.Center;
             GameGrid.Children.Add(labelTimer);
@@ -428,7 +506,7 @@ namespace Hangman
             level1.HorizontalAlignment = HorizontalAlignment.Left;
             level1.Width = 150;
             level1.Height = 35;
-           // level1.Foreground = Brushes.Red;
+            // level1.Foreground = Brushes.Red;
 
             GameGrid.Children.Add(level1);
 
@@ -441,7 +519,7 @@ namespace Hangman
             level2.Width = 150;
             level2.Height = 35;
             level2.Margin = new Thickness(0d, 30d, 0d, 0d);
-           // level2.Foreground = Brushes.Red;
+            // level2.Foreground = Brushes.Red;
             GameGrid.Children.Add(level2);
 
 
@@ -452,7 +530,7 @@ namespace Hangman
             level3.Width = 150;
             level3.Height = 35;
             level3.Margin = new Thickness(0, 60, 0, 0);
-           //level3.Foreground = Brushes.Red;
+            //level3.Foreground = Brushes.Red;
             GameGrid.Children.Add(level3);
 
 
@@ -464,7 +542,7 @@ namespace Hangman
             level4.Width = 150;
             level4.Height = 35;
             level4.Margin = new Thickness(0, 90, 0, 0);
-           // level4.Foreground = Brushes.Red;
+            // level4.Foreground = Brushes.Red;
             GameGrid.Children.Add(level4);
 
 
@@ -475,7 +553,7 @@ namespace Hangman
             level5.HorizontalAlignment = HorizontalAlignment.Left;
             level5.Width = 150;
             level5.Height = 35;
-           // level5.Foreground = Brushes.Red;
+            // level5.Foreground = Brushes.Red;
             level5.Margin = new Thickness(0, 120, 0, 0);
             GameGrid.Children.Add(level5);
 
@@ -509,7 +587,7 @@ namespace Hangman
                 label.VerticalAlignment = VerticalAlignment.Top;
                 label.Background = Brushes.White;
                 label.Name = "Character" + i.ToString();
-               
+
                 label.Margin = new Thickness(i * label.Width, 0d, 0d, 0d);
 
                 Labels.Add(label);
@@ -560,13 +638,13 @@ namespace Hangman
             States.IsEnabled = false;
             Mountains.IsEnabled = false;
             button.IsEnabled = true;
-       
+
         }
 
         private void Movies_Click(object sender, RoutedEventArgs e)
         {
             Movies.IsEnabled = true;
-            
+
             AllCategories.IsEnabled = false;
             Cars.IsEnabled = false;
 
@@ -598,7 +676,7 @@ namespace Hangman
             States.IsEnabled = false;
             Movies.IsEnabled = false;
             button.IsEnabled = true;
-   
+
         }
 
         private void Rivers_Click(object sender, RoutedEventArgs e)
@@ -610,7 +688,7 @@ namespace Hangman
             States.IsEnabled = false;
             Mountains.IsEnabled = false;
             button.IsEnabled = true;
-      
+
         }
 
         private void AllCategories_Click(object sender, RoutedEventArgs e)
@@ -622,7 +700,7 @@ namespace Hangman
             States.IsEnabled = false;
             Mountains.IsEnabled = false;
             button.IsEnabled = true;
-          
+
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
@@ -636,13 +714,13 @@ namespace Hangman
             button.IsEnabled = false;
         }
 
-      
+
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-         
+
             this.Close();
-          
+
         }
     }
 }

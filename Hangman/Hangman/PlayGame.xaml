@@ -16,12 +16,21 @@
     </Window.Background>
     <Grid x:Name="GameGrid" Width="495" Height="320">
         <Grid.Children>
-            
+
             <Label Content="       CHOOSE THE CATEGORY" HorizontalAlignment="Left" Height="28" Margin="0,64,0,0" VerticalAlignment="Top" Width="185" Foreground="White">
                 <Label.BorderBrush>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Black"/>
                         <GradientStop Color="#FFE01D1D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.BorderBrush>
+            </Label>
+
+            <Label Content="       WELCOME TO HANGMAN!" HorizontalAlignment="Left" Height="49" Margin="-12,15,0,0" VerticalAlignment="Top" Width="364" Foreground="White" FontSize="24" FontStyle="Italic" FontFamily="Viner Hand ITC">
+                <Label.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="#FFE00C0C" Offset="1"/>
                     </LinearGradientBrush>
                 </Label.BorderBrush>
             </Label>
@@ -35,6 +44,16 @@
             <Button Content="About"  Command ="{Binding HelpCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="132,290,0,0" />
             <Button Content="Statistics" Command="{Binding StatisticsCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,290,0,0"/>
             <Button Content="Exit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="360,290,0,0" Click="Exit_Click"/>
+            <Image Name ="Imagine"  Height="100" Width="100"/>
+            <Label Name="labelNume" Content="" HorizontalAlignment="Left" Height="28" Margin="212,217,0,0" VerticalAlignment="Top" Width="186" Foreground="White" FontSize="14" FontStyle="Italic">
+                <Label.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="#FFE01D1D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.BorderBrush>
+            </Label>
+
 
 
 
