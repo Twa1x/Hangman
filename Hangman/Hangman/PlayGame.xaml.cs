@@ -57,6 +57,7 @@ namespace Hangman
         private User _currentUser;
         Button button = new Button();
 
+        
         public PlayGame(User currentUser)
         {
             wins = 0;
@@ -110,7 +111,7 @@ namespace Hangman
 
         private void BackBtnClick(object sender, RoutedEventArgs e)
         {
-
+            dispatcherTimer.Stop();
             this.Close();
             PlayGame playGame = new PlayGame(_currentUser);
             playGame.Show();
@@ -156,7 +157,7 @@ namespace Hangman
         }
         private void NewGameBtnClick(object sender, RoutedEventArgs e)
         {
-
+            dispatcherTimer.Stop();
             saveString = new string[8];
             StartTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
