@@ -1,1 +1,2 @@
-Grecu C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar3.PNG 0 8 0 0 0 0 0
+Grecu C:\Users\INTEL\Documents\GitHub\Hangman\Hangman\Hangman\Resources\Avatars\Avatar3.PNG 0 11 0 0 0 0 0
+alex C:\Users\INTEL\Pictures\buletin.jpg 0 1 0 0 0 0 0

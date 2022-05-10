@@ -39,6 +39,7 @@ namespace Hangman
         private DateTime deadline;
         //nume, categorie, cuvant,, litere corecte, stage, levele, timer; 
         private string[] saveString = new string[8];
+        private string[] openString = new string[8];
         private Game HangmanGame { get; set; }
 
         private int wins;
@@ -46,6 +47,7 @@ namespace Hangman
         private List<Label> Labels { get; set; }
         private Image StageImage { get; set; }
 
+        Button openButton = new Button();
         Button backButton = new Button();
         Button saveButton = new Button();
         Label labelTimer = new Label();
@@ -57,7 +59,32 @@ namespace Hangman
         private User _currentUser;
         Button button = new Button();
 
-        
+        public PlayGame(User currentUser, string text)
+        {
+            _currentUser = currentUser;
+            Console.WriteLine(text);
+            wins = 0;
+            InitializeComponent();
+            Labels = new List<Label>();
+            Buttons = new List<Button>();
+            CreateNewGameBtn();
+
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+
+
+            Cars.IsEnabled = true;
+            Mountains.IsEnabled = true;
+            Movies.IsEnabled = true;
+            Rivers.IsEnabled = true;
+            States.IsEnabled = true;
+
+            deadline = DateTime.Now.AddSeconds(delay);
+            dispatcherTimer.Start();
+
+            Imagine.Source = new BitmapImage(new Uri(currentUser.ImagePath, UriKind.Absolute));
+            labelNume.Content = currentUser.UserName;
+        }
+
         public PlayGame(User currentUser)
         {
             wins = 0;
@@ -65,7 +92,7 @@ namespace Hangman
             Labels = new List<Label>();
             Buttons = new List<Button>();
             CreateNewGameBtn();
-          
+
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
 
             _currentUser = currentUser;
@@ -121,15 +148,15 @@ namespace Hangman
         private void SaveBtnClick(object sender, RoutedEventArgs e)
         {
             saveString[0] = "NUMELE USER-ULUI: " + _currentUser.UserName;
-           
+
             switch (wins)
             {
-                case 0: { saveString[5] = "LEVEL 0 "; break; }
-                case 1: { saveString[5] = "LEVEL 1 "; break; }
-                case 2: { saveString[5] = "LEVEL 2 "; break; }
-                case 3: { saveString[5] = "LEVEL 3 "; break; }
-                case 4: { saveString[5] = "LEVEL 4 "; break; }
-                case 5: { saveString[5] = "LEVEL 5 "; break; }
+                case 0: { saveString[5] = "LEVEL: 0 "; break; }
+                case 1: { saveString[5] = "LEVEL: 1 "; break; }
+                case 2: { saveString[5] = "LEVEL: 2 "; break; }
+                case 3: { saveString[5] = "LEVEL: 3 "; break; }
+                case 4: { saveString[5] = "LEVEL: 4 "; break; }
+                case 5: { saveString[5] = "LEVEL: 5 "; break; }
                 default:
                     break;
             }
@@ -142,17 +169,17 @@ namespace Hangman
                 Console.WriteLine(item);
             }
             string path = _currentUser.UserName + "SAVED.txt";
-          
-          
-            
-                // Create a file to write to.
-                using (StreamWriter sw = File.CreateText(path))
-                {
-                    foreach(var item in saveString)
-                        sw.WriteLine(item);
 
-                }
-            
+
+
+            // Create a file to write to.
+            using (StreamWriter sw = File.CreateText(path))
+            {
+                foreach (var item in saveString)
+                    sw.WriteLine(item);
+
+            }
+
 
         }
         private void NewGameBtnClick(object sender, RoutedEventArgs e)
@@ -275,7 +302,7 @@ namespace Hangman
             }
 
 
-            InitializeGameField(words[new Random().Next(0, words.Length)]);
+            InitializeGameField(words[new Random().Next(0, words.Length)], 0);
 
         }
 
@@ -356,11 +383,12 @@ namespace Hangman
             }
         }
 
-        private void CharacterBtnClick(object sender, RoutedEventArgs e)
-        {
-            int[] temp = HangmanGame.TakeCharacter((sender as Button).Content.ToString()[0]);
 
-            
+        private void HelpCharacterBtnOpen(char ch)
+        {
+            int[] temp = HangmanGame.TakeCharacter(ch);
+
+
             for (int i = 0; i < temp.Length; i++)
             {
                 if (temp[i] == 1)
@@ -368,7 +396,59 @@ namespace Hangman
                     Labels[i].Content = HangmanGame.Word[i];
                     saveString[3] += Labels[i].Content + ", ";
                 }
-                
+
+            }
+
+            StageImage.Source = HangmanGame.GetStageImage();
+
+            if (Labels.Count(l => l.Content == null) == 0)
+            {
+                FinishGame("You Win!");
+                wins++;
+                switch (wins)
+                {
+                    case 1: { level1.Foreground = Brushes.LightGreen; break; }
+                    case 2: { level2.Foreground = Brushes.LightGreen; break; }
+                    case 3: { level3.Foreground = Brushes.LightGreen; break; }
+                    case 4: { level4.Foreground = Brushes.LightGreen; break; }
+                    case 5: { level5.Foreground = Brushes.LightGreen; break; }
+                    default:
+                        break;
+                }
+
+
+                GameGrid.Children[1].IsEnabled = true;
+                backButton.IsEnabled = true;
+            }
+            else if (HangmanGame.IsGameOver())
+            {
+                FinishGame("You Lose!");
+                level1.Foreground = Brushes.Red;
+                level2.Foreground = Brushes.Red;
+                level3.Foreground = Brushes.Red;
+                level4.Foreground = Brushes.Red;
+                level5.Foreground = Brushes.Red;
+                wins = 0;
+                GameGrid.Children[1].IsEnabled = true;
+                backButton.IsEnabled = true;
+                ChangeStatistic(_currentUser.UserName, "Lost");
+            }
+
+
+        }
+        private void CharacterBtnClick(object sender, RoutedEventArgs e)
+        {
+            int[] temp = HangmanGame.TakeCharacter((sender as Button).Content.ToString()[0]);
+
+
+            for (int i = 0; i < temp.Length; i++)
+            {
+                if (temp[i] == 1)
+                {
+                    Labels[i].Content = HangmanGame.Word[i];
+                    saveString[3] += Labels[i].Content + ", ";
+                }
+
             }
 
             StageImage.Source = HangmanGame.GetStageImage();
@@ -409,8 +489,9 @@ namespace Hangman
             {
                 (sender as Button).IsEnabled = false;
                 string chr = (sender as Button).Content.ToString();
-                if (!(saveString[3].ToString().Contains(chr)))
-                 saveString[7] += (sender as Button).Content + ", ";
+                if (saveString[3] != null)
+                    if (!(saveString[3].ToString().Contains(chr)))
+                        saveString[7] += (sender as Button).Content + ", ";
             }
         }
 
@@ -420,11 +501,11 @@ namespace Hangman
             Buttons.ForEach(b => b.IsEnabled = false);
         }
 
-        private void InitializeGameField(string word)
+        private void InitializeGameField(string word, int stage)
         {
             saveString[2] += "CUVANTUL: " + word;
             HangmanGame = new Game(word, GameLanguage.En);
-
+            HangmanGame.Stage = stage;
             Labels.Clear();
             Buttons.Clear();
             GameGrid.Children.Clear();
@@ -470,6 +551,7 @@ namespace Hangman
             backButton.Margin = new Thickness(0, 100, 0, 0);
             backButton.Click += new RoutedEventHandler(BackBtnClick);
         }
+
 
         private void CreateSaveGameBtn()
         {
@@ -721,6 +803,88 @@ namespace Hangman
         {
 
             this.Close();
+
+        }
+
+        private void OpenGameBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+            //nume, categorie, cuvant,, litere corecte, stage, levele, timer, cuvinte gresite; 
+
+            string fileName = @".\" + _currentUser.UserName + "SAVED.txt";
+
+            string[] Lines = new string[8];
+          
+
+            try
+            {
+                // Do not initialize this variable here.
+                Lines = File.ReadAllLines(fileName);
+                int index = 0;
+                foreach (string line in Lines)
+                {
+                    int tempIndex = line.IndexOf(":");
+                    tempIndex = tempIndex + 2;
+                    string tempString = line.Substring(tempIndex, line.Length - tempIndex);
+                    openString[index++] = tempString;
+
+                }
+
+                InitializeGameField(openString[2], Int32.Parse(openString[4]));
+
+                for (int i = 0; i < openString[3].Length; i++)
+                {
+                    if (openString[3][i] != ',' && openString[3][i] != ' ')
+                    {
+                        HelpCharacterBtnOpen(openString[3][i]);
+                    }
+                }
+
+                saveString = openString;
+
+                foreach (string line in openString)
+                {
+                    Console.WriteLine(line);
+                }
+
+                wins = Int32.Parse(openString[5]);
+                switch (wins)
+                {
+                    case 1: { level1.Foreground = Brushes.LightGreen; break; }
+                    case 2: { level1.Foreground = Brushes.LightGreen; level2.Foreground = Brushes.LightGreen; break; }
+                    case 3: { level1.Foreground = Brushes.LightGreen; level2.Foreground = Brushes.LightGreen; level3.Foreground = Brushes.LightGreen; break; }
+                    case 4: { level1.Foreground = Brushes.LightGreen; level2.Foreground = Brushes.LightGreen; level3.Foreground = Brushes.LightGreen; level4.Foreground = Brushes.LightGreen; break; }
+                    case 5: { level1.Foreground = Brushes.LightGreen; level2.Foreground = Brushes.LightGreen; level3.Foreground = Brushes.LightGreen; level4.Foreground = Brushes.LightGreen; level5.Foreground = Brushes.LightGreen; break; }
+                    default:
+                        break;
+                }
+
+
+                foreach (var item in Buttons)
+                {
+                    if (openString[3].Contains(item.Content.ToString()) || openString[7].Contains(item.Content.ToString()))
+                    {
+                        item.IsEnabled = false;
+                    }
+                }
+
+                dispatcherTimer.Stop();
+                saveString = new string[8];
+                StartTimer();
+                dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+                deadline = DateTime.Now.AddSeconds(Int32.Parse(openString[6]));
+                dispatcherTimer.Start();
+
+
+            }
+            catch
+            {
+                MessageBox.Show("NU AI SALVAT NICIUN JOC");
+                
+            }
+                     
+
+           
 
         }
     }

@@ -71,7 +71,7 @@ namespace Hangman.ViewModels
             foreach (string line in lines)
             {
                 string[] subs = line.Split(' ');
-            
+
                 int i = 0;
                 User user = new User();
                 foreach (string word in subs)
@@ -144,7 +144,7 @@ namespace Hangman.ViewModels
             {
                 string[] words = line.Split(' ');
 
-                localTextBox.Text += ("Nume: " + words[0] + "\nImagePath: " + words[1] + "\nGames Lost: " + words[3] + "\nAllCategories Games Win: " + words[2] + "\nCars Games Win: " + words[4] 
+                localTextBox.Text += ("Nume: " + words[0] + "\nImagePath: " + words[1] + "\nGames Lost: " + words[3] + "\nAllCategories Games Win: " + words[2] + "\nCars Games Win: " + words[4]
                     + "\nRivers Games Win: " + words[5] + "\nStates Games Win: " + words[6] + "\nMountains Games Win: " + words[7] + "\nMovies Games Win: " + words[8]);
                 localTextBox.Text += "\n--------------------------------------------------------------------------------------------------------------------------\n";
             }
@@ -153,6 +153,8 @@ namespace Hangman.ViewModels
             statisticsDialog.Show();
 
         }
+
+     
 
         private void Help()
         {
@@ -187,6 +189,7 @@ namespace Hangman.ViewModels
                 return addCommand;
             }
         }
+
 
 
 
@@ -236,11 +239,11 @@ namespace Hangman.ViewModels
         {
             get
             {
-                if (avatarCommand == null)
+                if (playCommand == null)
                 {
-                    avatarCommand = new RelayCommand(Play);
+                    playCommand = new RelayCommand(Play);
                 }
-                return avatarCommand;
+                return playCommand;
             }
         }
 
